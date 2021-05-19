@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Socket.IO Example</title>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font: 13px Helvetica, Arial; }
+        form { background: grey; padding: 10px; position: fixed; bottom: 0; width: 100%; }
+        form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+        form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+        #messages { list-style-type: none; margin: 0; padding: 0; }
+        #messages li { padding: 5px 10px; }
+        #messages li:nth-child(odd) { background: #eee; }
+    </style>
+</head>
+<body>
+
+<h1>Socket.IO Example</h1>
+
+<ul id="messages"></ul>
+
+<form action="">
+    <input id="message" autocomplete="off" required autofocus />
+    <button>Send</button>
+</form>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.slim.js"></script>
+<script>
+    const socket = io()
+    const form = document.querySelector('form')
+    const inputMessage = document.getElementById('message')
+
+    form.addEventListener('submit', (event) => {
+        event.preventDefault()
+        socket.emit('chat-message', inputMessage.value)
+        form.reset()
+    })
+
+    socket.on('chat-message', (message) => {
+        const messages = document.getElementById('messages')
+        messages.innerHTML += `<li>${message}</li>`
+    })
+</script>
+</body>
+</html>
